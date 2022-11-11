@@ -1,0 +1,4 @@
+export const SWAGGER_API_ROOT = 'api';
+export const SWAGGER_API_NAME = 'API ECOMMERCE';
+export const SWAGGER_API_DESCRIPTION = 'API DESCRIPTION PROJECT';
+export const SWAGGER_API_CURRENT_VERSION = '1.0';

@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: 'mysql'
+    image: mysql:8.0
+    ports:
+      - '${DB_PORT}:3306'
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    env_file:
+      - .env
+    environment:
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    networks:
+      - nestjs
+
+  redis:
+    container_name: redis
+    image: redis:6.2
+    ports:
+      - ${REDIS_PORT}:6379
+    networks:
+      - nestjs
+    volumes:
+      - redis_data:/data
+
+  nestjs:
+    container_name: ${PROJECT_NAME}-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PORT: ${PORT}
+    ports:
+      - ${PORT}:5000
+    depends_on:
+      - mysql
+      - redis
+    env_file:
+      - .env
+    networks:
+      - nestjs
+
+networks:
+  nestjs:
+
+volumes:
+  mysql-data:
+  redis_data:
