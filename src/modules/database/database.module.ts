@@ -14,6 +14,7 @@ import { User } from '../users/entities/user.entity';
         port: config.get('database.port'),
         username: config.get('database.username'),
         password: config.get('database.password'),
+        database: config.get('database.database'),
         entities: [User],
         synchronize: config.get('database.synchronize'),
         migrations: ['dist/database/migrations/*.js'],
