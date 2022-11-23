@@ -1,9 +1,13 @@
-import { BaseEntity } from '../../common/base/base.entity';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'users' })
-export class User extends BaseEntity {
+export class User {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
@@ -15,4 +19,13 @@ export class User extends BaseEntity {
 
   @Column({ type: 'varchar', length: 255, select: false })
   password: string;
+
+  @Column({ type: 'boolean', default: false })
+  isVerified: Boolean;
+
+  @CreateDateColumn({ type: 'datetime' })
+  created_at: Date;
+
+  @UpdateDateColumn({ type: 'datetime' })
+  updated_at: Date;
 }
