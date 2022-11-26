@@ -21,7 +21,7 @@ export class User {
   password: string;
 
   @Column({ type: 'boolean', default: false })
-  isVerified: Boolean;
+  isVerified: boolean;
 
   @CreateDateColumn({ type: 'datetime' })
   created_at: Date;

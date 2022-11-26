@@ -1,22 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppController } from './controllers/app.controller';
+import { AppService } from './services/app.service';
 import { ConfigModule } from '@nestjs/config';
+
 import databaseConfig from '../../shared/config/database.config';
-import { DatabaseModule } from '../../shared/database/database.module';
+import { MySqlModule } from '../../shared/database/mysql.module';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { LoggerModule } from '../../shared/logger/logger.module';
+import redisConfig from '../../shared/config/redis.config';
+import { RedisCacheModule } from '../../shared/redis-cache/redis-cache.module';
 
 @Module({
   imports: [
-    //use .env global
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig],
+      load: [databaseConfig, redisConfig],
       envFilePath: ['.env'],
     }),
-    DatabaseModule,
+    MySqlModule,
+    RedisCacheModule,
     AuthModule,
     UsersModule,
     LoggerModule,

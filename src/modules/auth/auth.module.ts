@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
+
+import { AuthService } from './services/auth.service';
+import { AuthController } from './controllers/auth.controller';
+import { RedisCacheModule } from '../../shared/redis-cache/redis-cache.module';
 
 @Module({
+  imports: [RedisCacheModule],
   controllers: [AuthController],
-  providers: [AuthService]
+  providers: [AuthService],
 })
 export class AuthModule {}
