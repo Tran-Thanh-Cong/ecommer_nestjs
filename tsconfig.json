@@ -11,6 +11,9 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
+    "paths": {
+      "@config/*": ["src/shared/config/*"]
+    },
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,

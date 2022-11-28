@@ -6,7 +6,9 @@ services:
     image: mysql:8.0
     ports:
       - '3309:3306'
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
     volumes:
+      - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
       - ./mysql-data:/var/lib/mysql
     restart: always
     env_file:
@@ -14,29 +16,9 @@ services:
     environment:
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE = ${DB_DATABASE}
     networks:
-      - nestjs
-
-  nestjs:
-    container_name: nestjs
-    image: ecommerce-nestjs
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    command: npm run start:dev
-    ports:
-      - ${PORT}:5000
-    depends_on:
-      - mysql
-      - redis
-    env_file:
-      - .env
-    networks:
-      - nestjs
-    volumes:
-      - ./:/usr/src/app
-      - /usr/src/app/node_modules
-    restart: always
+      default:
 
   redis:
     container_name: redis
@@ -46,10 +28,36 @@ services:
     volumes:
       - ./redis:/data
     networks:
-      - nestjs
+      default:
+
+  nestjs:
+    container_name: ecommerce-nestjs-debug
+    image: ecommerce-nestjs-debug
+    build:
+      context: .
+      dockerfile: ./docker/debug/Dockerfile
+    command: npm run start:dev
+    ports:
+      - ${PORT}:5000
+    links:
+      - mysql
+      - redis
+    depends_on:
+      - mysql
+      - redis
+    env_file:
+      - .env
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    networks:
+      default:
 
 networks:
   nestjs:
 
 volumes:
+  redis:
+    driver: local
   mysql-data:

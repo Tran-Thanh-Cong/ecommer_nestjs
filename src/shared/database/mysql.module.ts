@@ -9,17 +9,15 @@ import { User } from '../../modules/users/entities/user.entity';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
+      useFactory: async (config: ConfigService) => ({
         type: 'mysql',
         host: config.get('database.host'),
         port: config.get('database.port'),
         username: config.get('database.username'),
         password: config.get('database.password'),
         database: config.get('database.database'),
+        synchronize: true,
         entities: [User],
-        synchronize: config.get('database.synchronize'),
-        migrations: ['dist/database/migrations/*.js'],
-        migrationsRun: true,
       }),
     }),
   ],

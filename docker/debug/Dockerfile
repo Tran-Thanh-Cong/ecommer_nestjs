@@ -13,8 +13,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-# Creates a "dist" folder with the production build
-RUN npm run build
+#using port for application
+EXPOSE 5000
 
-# Start the server using the production build
-CMD [ "node", "dist/main.js" ]
+# Start the server using the developer
+CMD ["npm", "run", "start:dev"]
