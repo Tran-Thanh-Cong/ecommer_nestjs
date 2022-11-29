@@ -26,36 +26,21 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Create file .env then coppy all data into .env.example
+
+## run application using docker-compose with development
 
 ```bash
-$ npm install
+$ docker-compose up dev -d
 ```
 
-## Running the app
-
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+## Running the application using docker-compose with production
+$ docker-compose up prod -d
 ```
 
-## Test
-
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+  http://localhost:5000/api#/ocalhost
 ```
 
 ## Support
@@ -64,9 +49,9 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - Tran Thanh Cong
+- Document - [https://nestjs.com](https://nestjs.com/)
+- Facebook - [https://www.facebook.com/ttc65](https://www.facebook.com/ttc65)
 
 ## License
 

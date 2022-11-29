@@ -30,13 +30,39 @@ services:
     networks:
       default:
 
-  nestjs:
-    container_name: ecommerce-nestjs-debug
-    image: ecommerce-nestjs-debug
+  dev:
+    container_name: ecommerce-nestjs-dev
+    image: ecommerce-nestjs-dev
     build:
       context: .
-      dockerfile: ./docker/debug/Dockerfile
+      target: development
+      dockerfile: ./Dockerfile
     command: npm run start:dev
+    ports:
+      - ${PORT}:5000
+    links:
+      - mysql
+      - redis
+    depends_on:
+      - mysql
+      - redis
+    env_file:
+      - .env
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    networks:
+      default:
+
+  prod:
+    container_name: ecommerce-nestjs-prod
+    image: ecommerce-nestjs-prod
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
+    command: npm run start:prod
     ports:
       - ${PORT}:5000
     links:

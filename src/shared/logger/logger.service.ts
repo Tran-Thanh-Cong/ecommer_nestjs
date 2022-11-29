@@ -1,4 +1,5 @@
 import { Injectable, Scope } from '@nestjs/common';
+import { dirname } from 'path';
 import { Logger, transports, createLogger } from 'winston';
 
 @Injectable({ scope: Scope.TRANSIENT })
@@ -14,7 +15,7 @@ export class LoggerService {
     this.logger = createLogger({
       transports: [
         new transports.Console(),
-        new transports.File({ filename: 'combined.log' }),
+        new transports.File({ filename: 'src/shared/log/combined.log' }),
       ],
     });
   }
