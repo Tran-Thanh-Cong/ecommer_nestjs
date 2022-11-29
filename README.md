@@ -31,6 +31,7 @@
 ## run application using docker-compose with development
 
 ```bash
+## Running the application using docker-compose with development
 $ docker-compose up dev -d
 ```
 
@@ -40,7 +41,7 @@ $ docker-compose up prod -d
 ```
 
 ```bash
-  http://localhost:5000/api#/ocalhost
+  http://localhost:5000/api#/localhost
 ```
 
 ## Support
