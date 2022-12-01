@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 
@@ -10,16 +10,21 @@ export class UserRepository extends Repository<User> {
     super(User, dataSource.createEntityManager());
   }
 
-  async getUserByEmail(email: string) {
+  async findByEmail(email: string): Promise<User> {
     const user = await this.findOne({ where: { email: email } });
-    if (!user) {
-      throw new NotFoundException();
+    if (user) {
+      throw new HttpException('User exist', HttpStatus.FOUND);
     }
-
     return user;
   }
 
   async createUser(data: CreateUserDto): Promise<User> {
-    return this.create(data);
+    const user = this.create({
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    });
+    await this.save(user);
+    return user;
   }
 }
