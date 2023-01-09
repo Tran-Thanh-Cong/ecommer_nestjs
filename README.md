@@ -62,7 +62,7 @@ $ docker-compose up dev -d
 $ docker-compose up prod -d
 ```
 
-## Start application without docker
+## Run application without docker
 
 ```bash
 ### install node_modules
