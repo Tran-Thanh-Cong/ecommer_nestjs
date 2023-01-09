@@ -30,9 +30,20 @@
 
 ## Create publicKey and privateKey
 
-- Create folder certs.
-- Create file private.pem: openssl genrsa -out private.pem 3072
-- Create file public.pem: openssl rsa -in certs/private.pem -pubout -out public.pem
+```bash
+### Create folder certs.
+$ mkdir certs
+```
+
+```bash
+### Create file private.pem:
+$ openssl genrsa -out private.pem 3072
+```
+
+```bash
+### Create file public.pem:
+$ openssl rsa -in certs/private.pem -pubout -out public.pem
+```
 
 ## run application using docker-compose with development
 
