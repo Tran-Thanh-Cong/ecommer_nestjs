@@ -26,7 +26,12 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Create file .env then coppy all key into .env.example
+## Create file .env
+
+```bash
+### Create file .env
+$ touch .env
+```
 
 ## Create publicKey and privateKey
 
@@ -45,7 +50,7 @@ $ openssl genrsa -out private.pem 3072
 $ openssl rsa -in certs/private.pem -pubout -out public.pem
 ```
 
-## run application using docker-compose with development
+## Run application using docker-compose with development
 
 ```bash
 ## Running the application using docker-compose with development
@@ -53,11 +58,19 @@ $ docker-compose up dev -d
 ```
 
 ```bash
-## Running the application using docker-compose with production
+### Running the application using docker-compose with production
 $ docker-compose up prod -d
 ```
 
+## Start application without docker
+
 ```bash
+### install node_modules
+$ npm install
+```
+
+```bash
+### link application
   http://localhost:5000/api#/localhost
 ```
 
