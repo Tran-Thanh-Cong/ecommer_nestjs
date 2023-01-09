@@ -65,12 +65,12 @@ $ docker-compose up prod -d
 ## Run application without docker
 
 ```bash
-### install node_modules
+### Install node_modules
 $ npm install
 ```
 
 ```bash
-### link application
+### Link swagger application
   http://localhost:5000/api#/localhost
 ```
 
