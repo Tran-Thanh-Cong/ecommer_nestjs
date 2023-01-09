@@ -1,46 +1,63 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
+import { Expose, Type, Exclude } from 'class-transformer';
+import { IsArray, IsBoolean, IsEmail, IsEnum, IsString } from 'class-validator';
 
-export class RegisterOutputDto {
+import { ROLE } from './../constants/role.constant';
+
+export class AuthRegisterOutputDto {
   @Expose()
-  @ApiProperty({
-    description: 'id',
-    example: 1,
-  })
+  @ApiProperty()
   id: number;
 
   @Expose()
-  @ApiPropertyOptional({
-    description: 'username',
-    example: 'tranthanhcong',
-  })
-  username: string;
-
-  @Expose()
-  @ApiProperty({
-    description: 'email',
-    example: 'tranthanhcongktpm2@gmail.com',
-  })
+  @ApiProperty()
+  @IsString()
+  @IsEmail()
   email: string;
 
+  @Exclude()
+  @ApiProperty()
+  @IsString()
+  password: string;
+
   @Expose()
-  @ApiProperty({
-    description: 'isVerified',
-    example: false,
-  })
+  @ApiProperty()
+  @IsBoolean()
   isVerified: boolean;
 
   @Expose()
-  @ApiProperty({
-    description: 'created_at',
-    example: Date.now(),
-  })
-  created_at: string;
+  @ApiProperty()
+  @IsArray()
+  @IsEnum(ROLE)
+  role: ROLE[];
 
   @Expose()
-  @ApiProperty({
-    description: 'updated_at',
-    example: Date.now(),
-  })
-  updated_at: string;
+  @ApiProperty()
+  @IsString()
+  provider: string;
+
+  @Expose()
+  @ApiProperty()
+  @IsBoolean()
+  isAccountDisabled: boolean;
+
+  @Expose()
+  @ApiProperty()
+  @IsString()
+  token: string;
+
+  @Expose()
+  @ApiProperty()
+  @IsString()
+  expireIn: string;
+
+  @Expose()
+  @ApiProperty()
+  @Type(() => Date)
+  createdAt: Date;
+
+  @Expose()
+  @ApiProperty()
+  @Type(() => Date)
+  updatedAt: Date;
 }

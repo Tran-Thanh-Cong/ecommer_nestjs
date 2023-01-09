@@ -1,7 +1,7 @@
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
-import { AppModule } from './modules/main/app.module';
+import { AppModule } from './modules/app/app.module';
 import { VALIDATION_PIPE_OPTIONS } from './shared/constants/pipe';
 import { setupSwagger } from './shared/swagger';
 

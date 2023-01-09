@@ -1,19 +1,10 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
-import { Match } from '../../../shared/decorator/match.decorator';
+import { Match } from '../../../shared/decorator/match-password.decorator';
 
-export class RegisterInputDto {
-  @ApiPropertyOptional({
-    description: 'username',
-    example: 'tranthanhcong',
-  })
-  @IsNotEmpty()
-  @IsString()
-  username: string;
-
+export class AuthRegisterInputDto {
   @ApiProperty({
-    description: 'email',
     example: 'tranthanhcongkptm2@gmail.com',
   })
   @IsEmail()
@@ -22,7 +13,6 @@ export class RegisterInputDto {
   email: string;
 
   @ApiProperty({
-    description: 'password',
     example: 'Cong060500',
   })
   @IsNotEmpty()
@@ -31,7 +21,6 @@ export class RegisterInputDto {
   password: string;
 
   @ApiProperty({
-    description: 'confirm_password',
     example: 'Cong060500',
   })
   @IsNotEmpty()

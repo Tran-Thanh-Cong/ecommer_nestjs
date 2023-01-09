@@ -16,4 +16,8 @@ export class RedisCacheService {
   async del(key: string): Promise<void> {
     return await this.cacheManager.del(key);
   }
+
+  async reset(): Promise<void> {
+    return await this.cacheManager.reset();
+  }
 }

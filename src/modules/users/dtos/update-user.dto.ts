@@ -1,17 +1,48 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
+
+import { ROLE } from './../../auth/constants/role.constant';
 
 export class UpdateUserDto {
   @ApiPropertyOptional()
   @IsOptional()
-  @IsNotEmpty()
-  @IsString()
-  username: string;
+  @IsEmail()
+  email?: string;
 
   @ApiPropertyOptional()
   @IsOptional()
   @IsNotEmpty()
-  @MinLength(6)
+  @Length(8)
   @IsString()
-  password: string;
+  password?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  isVerified?: boolean;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  token?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  expireIn?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsArray()
+  @IsEnum(ROLE)
+  role?: string[];
 }
