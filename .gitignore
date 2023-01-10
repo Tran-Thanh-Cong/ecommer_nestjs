@@ -41,3 +41,4 @@ mysql-data
 initdb.sql
 
 certs/
+google.json

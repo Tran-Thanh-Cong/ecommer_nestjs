@@ -1,3 +1,4 @@
+import { UnauthorizedException } from '@nestjs/common/exceptions';
 import { ROLE } from './../constants/role.constant';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
@@ -15,11 +16,17 @@ export class RolesGuard implements CanActivate {
     ]);
 
     if (!roles.length) {
-      return false;
+      return true;
     }
 
     const { user } = context.switchToHttp().getRequest();
 
-    return true;
+    if (roles.some((role) => user.roles?.includes(role))) {
+      return true;
+    }
+
+    throw new UnauthorizedException(
+      `User with roles ${user.roles} does not  have access to this route with role ${roles}`,
+    );
   }
 }

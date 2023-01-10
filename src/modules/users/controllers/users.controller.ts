@@ -10,16 +10,30 @@ import {
   Patch,
   HttpStatus,
   Delete,
+  UseGuards,
   Body,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+import { ROLE } from './../../auth/constants/role.constant';
+import { Roles } from './../../../shared/decorator/role.decorator';
+import { RolesGuard } from './../../auth/guards/roles.guard';
+import { JwtAuthGuard } from './../../auth/guards/jwt-auth.guard';
 import { OutputUserDto } from './../dtos/output-user.dto';
 import { User } from '../entities/users.entity';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from './../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(ROLE.ADMIN)
 @ApiTags('User')
 @Controller({
   path: 'users',

@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
 
-export const PublicRoute = () => {
+export const Public = () => {
   return SetMetadata('isPublic', true);
 };

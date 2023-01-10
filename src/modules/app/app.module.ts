@@ -5,10 +5,12 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
 
+import { facebookConfig } from './../../shared/config/facebook.config';
+import { AuthFacebookModule } from './../auth-facebook/auth-facebook.module';
+import { AuthGoogleModule } from './../auth-google/auth-google.module';
 import { jwtConfig } from './../../shared/config/jwt.config';
-import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
+import { googleConfig } from './../../shared/config/google.config';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { LoggerMiddleware } from './../../shared/middleware/logger.middleware';
@@ -28,12 +30,21 @@ import { QueueModule } from '../../shared/queue/queue.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [mysqlConfig, redisConfig, mailConfig, jwtConfig],
+      load: [
+        mysqlConfig,
+        redisConfig,
+        mailConfig,
+        jwtConfig,
+        googleConfig,
+        facebookConfig,
+      ],
       envFilePath: ['.env'],
     }),
     MysqlModule,
     RedisCacheModule,
     AuthModule,
+    AuthGoogleModule,
+    AuthFacebookModule,
     UsersModule,
     LoggerModule,
     MailModule,

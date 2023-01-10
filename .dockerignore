@@ -4,3 +4,4 @@ dist
 .git
 .env
 certs
+google.json

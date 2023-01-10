@@ -19,7 +19,6 @@ export class LocalStrategy extends PassportStrategy(
     super({
       usernameField: 'email',
       passwordField: 'password',
-      passReqToCallback: true,
     });
     this.logger.setContext(LocalStrategy.name);
   }

@@ -1,6 +1,6 @@
 import { Entity, Column, Unique, Index } from 'typeorm';
 
-import { AUTH_PROVIDER } from '../../auth/constants/auth-provider.constant';
+import { AUTH_PROVIDER } from '../../../shared/constants/auth-provider.constant';
 import { BaseEntity } from '../../../shared/database/base.entity';
 
 @Entity({ name: 'users' })

@@ -20,6 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { Request } from 'express';
 
+import { Public } from './../../../shared/decorator/public-route.decorator';
 import { AuthTokenOutputDto } from '../dtos/auth-token-output.dto';
 import { OutputUserDto } from './../../users/dtos/output-user.dto';
 import { LocalAuthGuard } from './../guards/local-auth.guard';
@@ -72,7 +73,7 @@ export class AuthController {
 
   @Get('verify-email')
   @ApiOperation({
-    summary: 'Verify email',
+    summary: 'Verify email api',
   })
   @ApiQuery({
     example: 'token',
@@ -81,6 +82,7 @@ export class AuthController {
     return this.authService.verifyEmail(token);
   }
 
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   @ApiOperation({
     summary: 'Login with email',
@@ -90,7 +92,6 @@ export class AuthController {
     type: AuthTokenOutputDto,
   })
   @HttpCode(HttpStatus.OK)
-  @UseGuards(LocalAuthGuard)
   async login(@Req() req: Request, @Body() credential: AuthLoginInputDto) {
     const user = plainToClass(OutputUserDto, req.user, {
       excludeExtraneousValues: true,
@@ -102,9 +103,10 @@ export class AuthController {
     };
   }
 
+  @UseGuards(JwtRefreshGuard)
   @Post('refresh-token')
   @ApiOperation({
-    summary: 'Refresh access token API',
+    summary: 'Refresh access token api',
   })
   @ApiHeader({ name: 'refresh_token' })
   @ApiResponse({
@@ -112,7 +114,6 @@ export class AuthController {
     type: AuthTokenOutputDto,
   })
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtRefreshGuard)
   async refreshToken(@Req() req: Request) {
     const user_id = parseInt(req.user.id);
 

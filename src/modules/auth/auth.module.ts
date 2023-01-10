@@ -1,10 +1,10 @@
-import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
-// import { JwtStrategy } from './strategies/jwt-auth.strategy';
+import { JwtStrategy } from './strategies/jwt-auth.strategy';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { UsersModule } from './../users/users.module';
 import { AuthService } from './services/auth.service';
@@ -38,6 +38,6 @@ import { AUTH_STRATEGY } from './constants/auth-strategy.constant';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtRefreshStrategy],
+  providers: [AuthService, LocalStrategy, JwtRefreshStrategy, JwtStrategy],
 })
 export class AuthModule {}

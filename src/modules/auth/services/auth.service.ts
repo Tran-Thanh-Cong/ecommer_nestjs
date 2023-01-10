@@ -12,7 +12,7 @@ import { UserRepository } from './../../users/repositories/users.repository';
 import { OutputUserDto } from './../../users/dtos/output-user.dto';
 import { AuthRegisterOutputDto } from './../dtos/auth-register-output.dto';
 import { AuthRegisterInputDto } from './../dtos/auth-register-input.dto';
-import { AUTH_PROVIDER } from './../constants/auth-provider.constant';
+import { AUTH_PROVIDER } from '../../../shared/constants/auth-provider.constant';
 import { UsersService } from './../../users/services/users.service';
 import { User } from './../../users/entities/users.entity';
 import { LoggerService } from '../../../shared/logger/logger.service';
@@ -94,19 +94,19 @@ export class AuthService {
       };
 
       const [access_token, refresh_token] = await Promise.all([
-        this.jwtService.signAsync(subject, {
-          expiresIn: this.configService.get<string>(
-            'jwt.accessTokenExpiresInSec',
-          ),
-        }),
         this.jwtService.signAsync(
-          { ...payload, ...subject },
+          { ...subject, ...payload },
           {
-            expiresIn: this.configService.get<string>(
-              'jwt.refreshTokenExpiresInSec',
+            expiresIn: this.configService.get<number>(
+              'jwt.accessTokenExpiresInSec',
             ),
           },
         ),
+        this.jwtService.signAsync(subject, {
+          expiresIn: this.configService.get<number>(
+            'jwt.refreshTokenExpiresInSec',
+          ),
+        }),
       ]);
 
       const authToken = {
