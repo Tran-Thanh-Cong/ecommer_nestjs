@@ -33,7 +33,6 @@ import { UpdateUserDto } from '../dtos/update-user.dto';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(ROLE.ADMIN)
 @ApiTags('User')
 @Controller({
   path: 'users',
@@ -54,6 +53,7 @@ export class UsersController {
   @ApiBody({
     type: CreateUserDto,
   })
+  @Roles(ROLE.ADMIN)
   @HttpCode(HttpStatus.CREATED)
   create(@Body() data: CreateUserDto): Promise<User> {
     return this.usersService.createUser(data);
@@ -68,6 +68,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Get all use pagination',
   })
+  @Roles(ROLE.ADMIN, ROLE.USER)
   @HttpCode(HttpStatus.OK)
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
@@ -85,6 +86,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Find user by id',
   })
+  @Roles(ROLE.ADMIN, ROLE.USER)
   @HttpCode(HttpStatus.OK)
   findOneUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return this.usersService.findOneUser({ id: id });
@@ -99,6 +101,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Update user by id',
   })
+  @Roles(ROLE.ADMIN)
   @HttpCode(HttpStatus.OK)
   async updateUserById(
     @Param('id', ParseIntPipe) id: number,
@@ -113,6 +116,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @Roles(ROLE.ADMIN)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'delete user by id',

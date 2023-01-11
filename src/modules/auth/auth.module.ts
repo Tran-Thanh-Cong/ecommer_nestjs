@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
+import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt-auth.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
@@ -14,6 +15,7 @@ import { LoggerModule } from '../../shared/logger/logger.module';
 import { BcryptModule } from '../../shared/bcrypt/bcrypt.module';
 import { MailModule } from '../../shared/mail/mail.module';
 import { AUTH_STRATEGY } from './constants/auth-strategy.constant';
+import { FacebookStrategy } from './strategies/facebook.strategy';
 
 @Module({
   imports: [
@@ -38,6 +40,13 @@ import { AUTH_STRATEGY } from './constants/auth-strategy.constant';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtRefreshStrategy, JwtStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtRefreshStrategy,
+    JwtStrategy,
+    GoogleStrategy,
+    FacebookStrategy,
+  ],
 })
 export class AuthModule {}

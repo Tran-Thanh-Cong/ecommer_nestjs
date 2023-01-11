@@ -1,3 +1,4 @@
+import { AUTH_PROVIDER } from '../../auth/constants/auth-provider.constant';
 import { ROLE } from './../../auth/constants/role.constant';
 import {
   IsEmail,
@@ -16,13 +17,12 @@ export class CreateUserDto {
   @IsString()
   @IsEmail()
   @IsNotEmpty()
-  email: string;
+  email: string | null;
 
   @ApiProperty({ example: 'Cong060500' })
   @IsString()
-  @IsNotEmpty()
   @Length(8, 255)
-  password: string;
+  password?: string;
 
   @ApiProperty({ example: ROLE.USER })
   @IsArray()
@@ -32,5 +32,23 @@ export class CreateUserDto {
 
   @ApiProperty({ example: false })
   @IsBoolean()
+  isVerified: boolean;
+
+  @ApiProperty({ example: false })
+  @IsBoolean()
   isAccountDisabled: boolean;
+
+  @ApiProperty({ example: AUTH_PROVIDER.EMAIL })
+  @IsEnum(AUTH_PROVIDER)
+  @IsString()
+  provider: string;
+
+  @IsString()
+  socialId?: string;
+
+  @IsString()
+  firstName?: string;
+
+  @IsString()
+  lastName?: string;
 }

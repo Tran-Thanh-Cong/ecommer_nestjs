@@ -7,8 +7,6 @@ import {
 import { ConfigModule } from '@nestjs/config';
 
 import { facebookConfig } from './../../shared/config/facebook.config';
-import { AuthFacebookModule } from './../auth-facebook/auth-facebook.module';
-import { AuthGoogleModule } from './../auth-google/auth-google.module';
 import { jwtConfig } from './../../shared/config/jwt.config';
 import { googleConfig } from './../../shared/config/google.config';
 import { AppService } from './app.service';
@@ -43,8 +41,6 @@ import { QueueModule } from '../../shared/queue/queue.module';
     MysqlModule,
     RedisCacheModule,
     AuthModule,
-    AuthGoogleModule,
-    AuthFacebookModule,
     UsersModule,
     LoggerModule,
     MailModule,

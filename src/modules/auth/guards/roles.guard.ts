@@ -1,8 +1,12 @@
-import { UnauthorizedException } from '@nestjs/common/exceptions';
-import { ROLE } from './../constants/role.constant';
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
+import { ROLE } from './../constants/role.constant';
 import { ROLE_KEYS } from '../../../shared/decorator/role.decorator';
 
 @Injectable()

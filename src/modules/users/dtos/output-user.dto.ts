@@ -1,4 +1,4 @@
-import { AUTH_PROVIDER } from '../../../shared/constants/auth-provider.constant';
+import { AUTH_PROVIDER } from '../../auth/constants/auth-provider.constant';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsArray, IsBoolean, IsEmail, IsEnum, IsString } from 'class-validator';
