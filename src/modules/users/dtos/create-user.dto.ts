@@ -32,7 +32,7 @@ export class CreateUserDto {
 
   @ApiProperty({ example: false })
   @IsBoolean()
-  isVerified: boolean;
+  isVerified?: boolean;
 
   @ApiProperty({ example: false })
   @IsBoolean()

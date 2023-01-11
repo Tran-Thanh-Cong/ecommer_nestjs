@@ -16,7 +16,7 @@ export class FacebookStrategy extends PassportStrategy(
       clientSecret: configService.get<string>('facebook.clientSecret'),
       callbackURL: configService.get<string>('facebook.callbackURL'),
       scope: 'email',
-      profileFields: ['emails', 'name'],
+      profileFields: ['picture.type(large)', 'emails', 'name', 'displayName'],
     });
   }
 
@@ -26,33 +26,16 @@ export class FacebookStrategy extends PassportStrategy(
     profile: Profile,
     done: (err: any, user: any, infor?: any) => void,
   ): Promise<void> {
-    const {
-      name,
-      _json,
-      _raw,
-      birthday,
-      provider,
-      emails,
-      photos,
-      username,
-      id,
-      displayName,
-    } = profile;
-
-    console.log(profile);
-
+    const { emails, name, provider, id } = profile;
+    const picture = `https://graph.facebook.com/${id}/picture?width=200&height=200&access_token=${accessToken}`;
     const user = {
       id: id,
       email: emails[0].value,
+      provider: provider,
       firstName: name.givenName,
       lastName: name.familyName,
     };
 
-    const payload = {
-      user,
-      accessToken,
-    };
-
-    return done(null, payload);
+    return done(null, user);
   }
 }

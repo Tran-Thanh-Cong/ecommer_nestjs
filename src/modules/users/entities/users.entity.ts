@@ -18,7 +18,12 @@ export class User extends BaseEntity {
   })
   password: string;
 
-  @Column({ type: 'boolean', default: false, name: 'isVerified' })
+  @Column({
+    type: 'boolean',
+    default: false,
+    name: 'isVerified',
+    nullable: true,
+  })
   isVerified: boolean;
 
   @Column({ type: 'boolean', default: true })

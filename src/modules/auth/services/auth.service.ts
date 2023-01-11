@@ -1,8 +1,12 @@
-import { UnauthorizedException } from '@nestjs/common/exceptions';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { plainToClass } from 'class-transformer';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 
 import { AuthTokenOutputDto } from './../dtos/auth-token-output.dto';
@@ -48,7 +52,9 @@ export class AuthService {
     });
   }
 
-  async verifyEmail(token: string) {
+  async verifyEmail(
+    token: string,
+  ): Promise<{ statusCode: HttpStatus; message: string }> {
     try {
       const user: User = await this.usersService.findOneUser({ token: token });
 
@@ -159,5 +165,61 @@ export class AuthService {
         excludeExtraneousValues: true,
       }),
     );
+  }
+
+  async createUserLoginGoogle(data: any): Promise<OutputUserDto> {
+    try {
+      let user = await this.userRepository.findOneUser({
+        provider: data.provider,
+        socialId: data.id,
+      });
+
+      if (!user) {
+        user = await this.userRepository.createUser({
+          email: data.email,
+          provider: data.provider,
+          socialId: data.id,
+          role: [ROLE.USER],
+          isAccountDisabled: false,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          isVerified: data.isVerified,
+        });
+      }
+      return plainToClass(OutputUserDto, user, {
+        excludeExtraneousValues: true,
+      });
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async createUserLoginFacebook(data: any) {
+    try {
+      let user = await this.userRepository.findOneUser({
+        provider: data.provider,
+        socialId: data.id,
+      });
+
+      if (!user) {
+        user = await this.userRepository.createUser({
+          email: data.email,
+          provider: data.provider,
+          socialId: data.id,
+          role: [ROLE.USER],
+          isAccountDisabled: false,
+          firstName: data.firstName,
+          lastName: data.lastName,
+        });
+
+        return plainToClass(OutputUserDto, user, {
+          excludeExtraneousValues: true,
+        });
+      }
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

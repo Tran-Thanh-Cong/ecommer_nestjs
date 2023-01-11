@@ -1,5 +1,3 @@
-import { FacebookLoginOutputDto } from './../dtos/facebook-login-output.dto';
-import { FacebookGuard } from './../guards/facebook.guard';
 import {
   Controller,
   Get,
@@ -23,6 +21,8 @@ import { plainToClass } from 'class-transformer';
 import { Request } from 'express';
 
 import { GoogleGuard } from './../guards/google.guard';
+import { FacebookLoginOutputDto } from './../dtos/facebook-login-output.dto';
+import { FacebookGuard } from './../guards/facebook.guard';
 import { AuthTokenOutputDto } from '../dtos/auth-token-output.dto';
 import { OutputUserDto } from './../../users/dtos/output-user.dto';
 import { LocalAuthGuard } from './../guards/local-auth.guard';
@@ -63,7 +63,9 @@ export class AuthController {
   @ApiBody({
     type: AuthRegisterInputDto,
   })
-  async register(@Body() data: AuthRegisterInputDto & OptionAuthRegister) {
+  async register(
+    @Body() data: AuthRegisterInputDto & OptionAuthRegister,
+  ): Promise<{ statusCode: HttpStatus; message: string }> {
     const user = await this.authService.register(data);
 
     this.mailService.sendMailQueue(user.email, user.id, user.token);
@@ -81,7 +83,9 @@ export class AuthController {
   @ApiQuery({
     example: 'token',
   })
-  verifyEmail(@Query('token') token: string) {
+  verifyEmail(
+    @Query('token') token: string,
+  ): Promise<{ statusCode: HttpStatus; message: string }> {
     return this.authService.verifyEmail(token);
   }
 
@@ -95,7 +99,14 @@ export class AuthController {
   })
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
-  async login(@Req() req: Request, @Body() credential: AuthLoginInputDto) {
+  async login(
+    @Req() req: Request,
+    @Body() credential: AuthLoginInputDto,
+  ): Promise<{
+    statusCode: HttpStatus;
+    message: string;
+    data: AuthTokenOutputDto;
+  }> {
     const user = plainToClass(OutputUserDto, req.user, {
       excludeExtraneousValues: true,
     });
@@ -110,7 +121,7 @@ export class AuthController {
   @Get('google/login')
   @ApiOperation({ summary: 'Login with google' })
   @UseGuards(GoogleGuard)
-  googleLogin() {}
+  googleLogin(): void {}
 
   @Get('google/redirect')
   @ApiOperation({ summary: 'Login with google redirect' })
@@ -120,10 +131,12 @@ export class AuthController {
   })
   @UseGuards(GoogleGuard)
   @HttpCode(HttpStatus.OK)
-  async googleRedirect(@Req() req: Request) {
-    const user = plainToClass(OutputUserDto, req.user, {
-      excludeExtraneousValues: true,
-    });
+  async googleRedirect(@Req() req: Request): Promise<{
+    statusCode: HttpStatus;
+    message: string;
+    data: AuthTokenOutputDto;
+  }> {
+    const user = await this.authService.createUserLoginGoogle(req.user);
 
     return {
       statusCode: HttpStatus.OK,
@@ -135,7 +148,7 @@ export class AuthController {
   @Get('facebook/login')
   @ApiOperation({ summary: 'Login with facebook' })
   @UseGuards(FacebookGuard)
-  facebookLogin() {}
+  facebookLogin(): void {}
 
   @Get('facebook/redirect')
   @ApiOperation({ summary: 'Login with google redirect' })
@@ -145,8 +158,18 @@ export class AuthController {
   })
   @UseGuards(FacebookGuard)
   @HttpCode(HttpStatus.OK)
-  async facebookRedirect(@Req() req: Request) {
-    return req.user;
+  async facebookRedirect(@Req() req: Request): Promise<{
+    statusCode: HttpStatus;
+    message: string;
+    data: AuthTokenOutputDto;
+  }> {
+    const user = await this.authService.createUserLoginFacebook(req.user);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Login with facebook successfully',
+      data: await this.authService.login(user),
+    };
   }
 
   @Post('refresh-token')
@@ -160,7 +183,11 @@ export class AuthController {
     type: AuthTokenOutputDto,
   })
   @HttpCode(HttpStatus.OK)
-  async refreshToken(@Req() req: Request) {
+  async refreshToken(@Req() req: Request): Promise<{
+    statusCode: HttpStatus;
+    message: string;
+    data: AuthTokenOutputDto;
+  }> {
     const user_id = parseInt(req.user.id);
 
     return {
